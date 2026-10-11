@@ -25,9 +25,9 @@ Embedded security, red teaming, and agent systems. I build things that fail clos
 
 Source private; demos available on request.
 
-- **Quintet** — Multi-device computational mic array: phones, laptops, and tablets as coordinated nodes with AI-driven placement and mixing (TypeScript / Rust / Swift).
-- **Infinity** — MCP computer-use agent across files, shell, browser, and desktop. Binaries at [infinity-codex-releases](https://github.com/isiliconx/infinity-codex-releases).
-- **Storo** — End-to-end encrypted personal cloud storage with PWA, desktop, and mobile clients.
-- **Infinite** — Cross-platform MCP bridge desktop app (local permission boundary for browser AI hosts).
+- **Quintet** - Multi-device computational mic array: phones, laptops, and tablets as coordinated nodes with AI-driven placement and mixing (TypeScript / Rust / Swift).
+- **Infinity** - MCP computer-use agent across files, shell, browser, and desktop. Binaries at [infinity-codex-releases](https://github.com/isiliconx/infinity-codex-releases).
+- **Storo** - End-to-end encrypted personal cloud storage with PWA, desktop, and mobile clients.
+- **Infinite** - Cross-platform MCP bridge desktop app (local permission boundary for browser AI hosts).
 
 <!-- DEMO_VIDEOS: add Quintet / Infinity / Storo / Infinite demo links here when ready -->
