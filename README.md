@@ -1,13 +1,13 @@
 <div align="center">
 
-# isilicon
+<img src="assets/hero.svg" alt="isilicon: security engineer building things that fail closed" width="100%"/>
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=22&pause=1200&color=7EE0FF&center=true&vCenter=true&width=680&height=40&lines=Embedded+security;Red+teaming+and+AI+security;Agents+that+use+computers;Distilling+big+models+into+small+ones)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=500&size=20&pause=1100&color=7EE0FF&center=true&vCenter=true&width=760&height=36&lines=Self-hosted+LLM+fleet+on+one+RTX+PRO+6000;12+model+configs+graded+on+one+matched+screen;Blind+two-grader+panel+%C2%B7+paired+CIs;Embedded+security+%C2%B7+FIDO2+%C2%B7+secure+boot;Red+teaming+and+AI+security;Agents+that+use+computers)](https://git.io/typing-svg)
 
-I build things that fail closed.
-
-https://huggingface.co/isilicon
-https://pirateface.co/isilicon
+<a href="https://huggingface.co/isilicon"><img src="https://img.shields.io/badge/Hugging%20Face-isilicon-FFB547?style=for-the-badge&logo=huggingface&logoColor=white&labelColor=0d1117" alt="Hugging Face"/></a>
+<a href="https://huggingface.co/collections/isilicon/mango-tested-models-and-preservation-mirrors"><img src="https://img.shields.io/badge/Collection-24%20model%20repos-7EE0FF?style=for-the-badge&logo=huggingface&logoColor=white&labelColor=0d1117" alt="Mango collection"/></a>
+<a href="https://pirateface.co/isilicon"><img src="https://img.shields.io/badge/PirateFace-seeding-B69CFF?style=for-the-badge&labelColor=0d1117" alt="PirateFace"/></a>
+<a href="https://discord.gg/5n5YDbQCMy"><img src="https://img.shields.io/badge/Infinity-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&labelColor=0d1117" alt="Infinity Discord"/></a>
 
 <br/>
 
@@ -15,6 +15,10 @@ https://pirateface.co/isilicon
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![Rust](https://img.shields.io/badge/Rust-000000?style=flat-square&logo=rust&logoColor=white)
+![CUDA](https://img.shields.io/badge/CUDA-76B900?style=flat-square&logo=nvidia&logoColor=white)
+![llama.cpp](https://img.shields.io/badge/llama.cpp%20%C2%B7%20GGUF-1f2937?style=flat-square)
+![MLX](https://img.shields.io/badge/MLX-000000?style=flat-square)
+![aiohttp](https://img.shields.io/badge/aiohttp-2C5BB4?style=flat-square&logo=aiohttp&logoColor=white)
 ![WebGPU](https://img.shields.io/badge/WebGPU-005A9C?style=flat-square&logo=webgpu&logoColor=white)
 ![Electron](https://img.shields.io/badge/Electron-47848F?style=flat-square&logo=electron&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
@@ -22,13 +26,86 @@ https://pirateface.co/isilicon
 
 </div>
 
+## Now: Mango, a self-hosted LLM lab
+
+One 96 GB RTX PRO 6000 serving a fleet of open-weight models to my own agents through an
+OpenAI-compatible API, with every model measured on the same frozen benchmark before it gets a route.
+The fleet uses uncensored / refusal-edited checkpoints, and they have to win on measured quality
+and speed like anything else.
+
+<img src="assets/mango-stats.svg" alt="12 configs graded, 3,232 per-question grades, 24 public HF repos, about 1.19 TB of weights preserved, one 96 GB RTX PRO 6000" width="100%"/>
+
+<img src="assets/mango-architecture.svg" alt="Agents to ngrok to mango-server to TensorFold, Strata and llama.cpp engines on one RTX PRO 6000; evaluation loop from fair-bench through graders, blind panel and economics rule to Hugging Face cards and PirateFace" width="100%"/>
+
+**What's interesting about it**
+
+- **mango-server**: one asyncio process replacing a chain of three blocking proxies. Profiles lease the GPU one
+  at a time (drain → switch), context windows grow and shrink by tier per request, and `reasoning_effort` maps to
+  each engine's real levels. Thinking is always on and no token cap is imposed beyond the context window.
+- **Three engines, one card**: TensorFold (MLX 4-bit + DFlash2 speculative drafter), Strata (GSQ quantized
+  MoE with hot-expert GPU placement) and pinned llama.cpp builds (GGUF, MTP heads, `--fit` CPU offload for big MoEs).
+- **fair-bench**: 404 frozen items weighted to what I actually use (human understanding, coding + cybersecurity,
+  agentic work), 12 offline agent cases with injected malicious instructions, and a 22-prompt open-ended suite.
+  The graders report Wilson intervals, paired bootstrap differences and an economics rule: a faster model only
+  displaces a better one if it is within 3 points and at least 1.5× faster.
+- **Blind panel**: Claude and Codex each freeze their ratings before the identity key is opened, and the two are averaged.
+- **Wipe-proof**: the GPU host is ephemeral. Results checkpoint continuously, downloads are hash-pinned, and a
+  one-cell recovery rebuilds runtime, weights and queue on a fresh host without rerunning finished work.
+
+<img src="assets/mango-leaderboard.svg" alt="Leaderboard of 12 configurations, from Qwen3.8 Flash Next IQ4_XS at 84.19 down to Qwen3.8 27B Cyber v2 Q6_K at 66.98, with workload minutes" width="100%"/>
+
+<details>
+<summary><strong>Domain breakdown</strong> · where each model is strong</summary>
+
+<br/>
+
+<img src="assets/mango-domains.svg" alt="Heatmap of social/EQ, cyber, agentic, coding, instruction-following and general scores for 12 configurations" width="100%"/>
+
+**What the numbers say so far**
+
+- Flash Next IQ4_XS leads at 84.19 in 35 workload minutes and is the default under the economics rule.
+  Qwen3.8 27B on MLX 4-bit finishes the same screen in 24 minutes at 80.64, which keeps it on the Pareto frontier
+  as the fast resident model.
+- Size didn't decide the order: Qwen3.5 122B (80.72) took 5× longer than the 27B for the same score, and
+  MiMo V2.6 needed 220 minutes.
+- Cyber-specialist Qwen 27B fine-tunes did *not* beat the general model on cyber here, and lost 26–31 points
+  on social/EQ. Different lineages and draft heads mean that's a finding about those builds, not about quantization.
+- Effort study on the 27B (full 403 valid items): xhigh 84.41 vs medium 82.87, paired 95% CI −1.71 to +4.82,
+  at 4.46× the time, so medium stays the default. The blind panel gave 8.18 vs 7.77 out of 10.
+
+</details>
+
+<details>
+<summary><strong>Public model repos</strong> · exact quants with test results on every card</summary>
+
+<br/>
+
+| Repo | What |
+| --- | --- |
+| [mango-qwen38-flashnext-iq4xs](https://huggingface.co/isilicon/mango-qwen38-flashnext-iq4xs) | Current leader · 84.19 |
+| [mango-flashnext-orca-iq4xs-20261029](https://huggingface.co/isilicon/mango-flashnext-orca-iq4xs-20261029) | Flash Next, Orca build · 83.42 |
+| [mango-deepseek41-gsq-iq2xs-uncensored](https://huggingface.co/isilicon/mango-deepseek41-gsq-iq2xs-uncensored) | DeepSeek V4.1 Flash, GSQ IQ2_XS for Strata · 83.19 |
+| [mango-qwen38-27b-uncensored-mlx4](https://huggingface.co/isilicon/mango-qwen38-27b-uncensored-mlx4) | Fast resident model + effort study · 80.64 |
+| [mango-qwen38-27b-gguf](https://huggingface.co/isilicon/mango-qwen38-27b-gguf) | 8 GGUF quants (Q2 to Q6) in one repo, general and Cyber lineages kept separate |
+| [mango-qwen35-122b-q4](https://huggingface.co/isilicon/mango-qwen35-122b-q4) | Qwen3.5 122B A10B · 80.72 |
+| [mango-mimo26-flash-mopd-uncensored-q3km](https://huggingface.co/isilicon/mango-mimo26-flash-mopd-uncensored-q3km) | MiMo V2.6 Flash · 79.39 |
+| [mango-dflash2](https://huggingface.co/isilicon/mango-dflash2) | DFlash2 speculative drafter |
+
+Everything else (GLM 5.3 Flash builds, Nanbeige, Cyber variants, drafters, tokenizers, queued candidates) is in the
+[collection](https://huggingface.co/collections/isilicon/mango-tested-models-and-preservation-mirrors).
+Every mirror keeps the original publisher's card, license and attribution. Torrents for preservation are on
+[PirateFace](https://pirateface.co/isilicon).
+
+</details>
+
 ## Interests
 
+- Self-hosted inference: quantization, speculative decoding, MoE offload, serving many models from one GPU
+- Model evaluation that holds up: frozen suites, paired statistics, blind grading
 - Embedded and hardware security (bootloaders, authenticators, constrained devices)
 - Red teaming, LLM jailbreaking, and AI security research
 - Agent tooling and computer-use agents
 - ML training, distillation, and efficiency
-- Multi-device audio systems
 
 ## Live demos
 
@@ -87,6 +164,7 @@ https://pirateface.co/isilicon
 
 | Project | What it is |
 | --- | --- |
+| [Mango on Hugging Face](https://huggingface.co/isilicon) | Self-hosted LLM fleet: 24 public model repos with exact-quant test results, charts and runtime guides |
 | [hardwarekeyemulator](https://github.com/isiliconx/hardwarekeyemulator) | Lab CTAP2 / FIDO2 software authenticator with CTAPHID, Linux UHID transport, and a local WebAuthn RP |
 | [hardwarekeyemulator-audit](https://github.com/isiliconx/hardwarekeyemulator-audit) | Security audit of the emulator: critical UV forge, AAGUID defect, remediations, and a differential that proves closures |
 | [the-byte-of-87](https://github.com/isiliconx/the-byte-of-87) | Secure embedded design challenge (MITRE eCTF style): ChaCha20-Poly1305 + Ed25519 bootloader and update path on Tiva |
