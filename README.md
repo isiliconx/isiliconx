@@ -158,6 +158,13 @@ Every mirror keeps the original publisher's card, license and attribution. Torre
 <sub>Cross-platform MCP bridge for browser AI hosts</sub>
 </td>
 </tr>
+<tr>
+<td width="50%" align="center">
+<a href="https://github.com/isiliconx/thefuture"><strong>thefuture</strong></a><br/>
+<sub>THE FUTURE — A History of Wonder: a cinematic, interactive journey through the history of science across eight chapters (Next.js)</sub>
+</td>
+<td></td>
+</tr>
 </table>
 
 ## Selected work
@@ -169,6 +176,7 @@ Every mirror keeps the original publisher's card, license and attribution. Torre
 | [hardwarekeyemulator-audit](https://github.com/isiliconx/hardwarekeyemulator-audit) | Security audit of the emulator: critical UV forge, AAGUID defect, remediations, and a differential that proves closures |
 | [the-byte-of-87](https://github.com/isiliconx/the-byte-of-87) | Secure embedded design challenge (MITRE eCTF style): ChaCha20-Poly1305 + Ed25519 bootloader and update path on Tiva |
 | [spacebunny](https://github.com/isiliconx/spacebunny) | WebGPU three.js site plus fifty offline self-contained graphics / simulation demos |
+| [thefuture](https://github.com/isiliconx/thefuture) | THE FUTURE — A History of Wonder: a cinematic, interactive journey through the history of science across eight chapters (Next.js) |
 | [nextdrop](https://github.com/isiliconx/nextdrop) | Zero-storage LAN file transfer portal over authenticated Socket.IO; files relay in memory only |
 | [infinity-codex-releases](https://github.com/isiliconx/infinity-codex-releases) | Verified Infinity binaries, installers, checksums, and offline USB bundles |
 
